@@ -10,7 +10,7 @@ from ChemTherm_library.tinkerforge_lib import *
 
 def tk_loop():
     
-    MFC_N2.set(0)
+    #MFC_N2.set(int(0))
     #MFC_CO2.set(int(set_MFC[1].get()))
    # MFC_CH4.set(int(set_MFC[2].get()))
     
@@ -22,6 +22,15 @@ def tk_loop():
     
     window.after(500, tk_loop)
         
+def getdata():
+
+    if set_MFC[0].get() !='':
+        MFC_N2.set(int(set_MFC[0].get()))
+    if set_MFC[1].get() !='':
+        MFC_CO2.set(int(set_MFC[1].get()))
+    if set_MFC[2].get() !='':
+        MFC_CH4.set(int(set_MFC[2].get()))
+    
  
 
 #----------- Json Setup ----------
@@ -30,7 +39,7 @@ with open('SetUp1.json', 'r') as config_file:
     
      
  
-#----------- TKforge Devices
+#------ Tinkerforge Devices -------
 HOST = "localhost"
 PORT = 4223
 
@@ -48,16 +57,19 @@ window = ctk.CTk()
 ctk.set_appearance_mode("light")
 scrW = window.winfo_screenwidth()
 scrH = window.winfo_screenheight()
-window.geometry("600x200")
+window.title("Equator MFC-Steuerung")
+window.geometry("350x300")
 
 
 #----------- Frames ----------
 lf_MFC = ctk.CTkFrame(window, border_color=config['TKINTER']['background-color'], border_width=0, height=scrH, width=scrW)
 name_Frame = ctk.CTkLabel(lf_MFC, font = ('Arial',16), text='MFC Steuerung')
 name_Frame.grid(column=0, columnspan = 2, row=0, ipadx=5, ipady=5)
-lf_MFC.place(x= 0,y= 0)
+lf_MFC.place(x= 30,y= 50)
 
-
+#------ Buttons ---------
+set_Value = ctk.CTkButton(window,text = 'Set Values', command = getdata, fg_color = 'brown')
+set_Value.place(x=30, y=10)
 
 name_MFC={}; set_MFC={}; unit_MFC={}; value_MFC={}
 for i in range(0,3):
