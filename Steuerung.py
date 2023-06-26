@@ -34,8 +34,8 @@ def getdata():
  
 
 #----------- Json Setup ----------
-with open('SetUp1.json', 'r') as config_file:
-    config = json.load(config_file)
+#with open('SetUp1.json', 'r') as config_file:
+   # config = json.load(config_file)
     
      
  
@@ -62,7 +62,7 @@ window.geometry("350x300")
 
 
 #----------- Frames ----------
-lf_MFC = ctk.CTkFrame(window, border_color=config['TKINTER']['background-color'], border_width=0, height=scrH, width=scrW)
+lf_MFC = ctk.CTkFrame(window, border_color='#F2F2F2', border_width=0, height=scrH, width=scrW)
 name_Frame = ctk.CTkLabel(lf_MFC, font = ('Arial',16), text='MFC Steuerung')
 name_Frame.grid(column=0, columnspan = 2, row=0, ipadx=5, ipady=5)
 lf_MFC.place(x= 30,y= 50)
@@ -70,10 +70,10 @@ lf_MFC.place(x= 30,y= 50)
 #------ Buttons ---------
 set_Value = ctk.CTkButton(window,text = 'Set Values', command = getdata, fg_color = 'brown')
 set_Value.place(x=30, y=10)
-
+MFC_List = ["N2",  "CO2",  "CH4"]
 name_MFC={}; set_MFC={}; unit_MFC={}; value_MFC={}
 for i in range(0,3):
-    name_MFC[i]= ctk.CTkLabel(lf_MFC, font = ('Arial',16), text=config['MFC']['name'][i])
+    name_MFC[i]= ctk.CTkLabel(lf_MFC, font = ('Arial',16), text=MFC_List[i])
     name_MFC[i].grid(column=0, row=i+1, ipadx=5, ipady=5)
     set_MFC[i] = tk.Entry(lf_MFC, font = ('Arial',16), width = 6 )
     set_MFC[i].grid(column=1, row=i+1, ipadx=5, ipady=5)
