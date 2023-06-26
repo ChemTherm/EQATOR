@@ -10,9 +10,16 @@ from ChemTherm_library.tinkerforge_lib import *
 
 def tk_loop():
     
-    MFC_N2.set(int(set_MFC[0].get()))
-    MFC_Air.set(int(set_MFC[1].get()))
-    MFC_Ethan.set(int(set_MFC[2].get()))
+    MFC[0].set(int(set_MFC[0].get()))
+    MFC[1].set(int(set_MFC[1].get()))
+    MFC[2].set(int(set_MFC[2].get()))
+    
+    
+    value_MFC[0].configure(text = str(MFC[0].Voltage) + " mV") 
+    value_MFC[1].configure(text = str(MFC[1].Voltage) + " mV") 
+    value_MFC[2].configure(text = str(MFC[2].Voltage) + " mV") 
+    
+    
     window.after(500, tk_loop)
         
  
@@ -31,9 +38,9 @@ ipcon = IPConnection() # Create IP connection
 ipcon.connect(HOST, PORT) # Connect to brickd
  
 
-MFC_N2 = MFC(ipcon, "21ft", MCFDual1,0)
-MFC_Air = MFC(ipcon, "ZuD",MCFDual1,1)
-MFC_Ethan = MFC(ipcon, "Tj4",MFCDual2,0) 
+MFC[0] = MFC_AIO_30(ipcon, "21uc", "21ft")
+MFC[1] = MFC_AIO_30(ipcon, "21u9","21fe")
+MFC[2] = MFC_AIO_30(ipcon, "21un","21fi") 
  
  
     
