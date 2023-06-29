@@ -15,9 +15,9 @@ def tk_loop():
    # MFC_CH4.set(int(set_MFC[2].get()))
     
     
-    value_MFC[0].configure(text = str(MFC_N2.voltage) + " mV") 
-    value_MFC[1].configure(text = str(MFC_CO2.voltage) + " mV") 
-    value_MFC[2].configure(text = str(MFC_CH4.voltage) + " mV") 
+    value_MFC[0].configure(text = str(MFC_N2.voltage*1000) + " mV") 
+    value_MFC[1].configure(text = str(MFC_CO2.voltage*1000) + " mV") 
+    value_MFC[2].configure(text = str(MFC_CH4.voltage*1000) + " mV") 
     
     
     window.after(500, tk_loop)
