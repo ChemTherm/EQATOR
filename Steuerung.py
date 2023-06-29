@@ -1,6 +1,7 @@
 import time
 import json
 import customtkinter as ctk
+from tkinter.filedialog import askopenfilename
 from PIL import Image,ImageTk
 from ChemTherm_library.tinkerforge_lib import *
 
@@ -15,9 +16,9 @@ def tk_loop():
    # MFC_CH4.set(int(set_MFC[2].get()))
     
     
-    value_MFC[0].configure(text = str(MFC_N2.voltage*1000) + " mV") 
-    value_MFC[1].configure(text = str(MFC_CO2.voltage*1000) + " mV") 
-    value_MFC[2].configure(text = str(MFC_CH4.voltage*1000) + " mV") 
+    value_MFC[0].configure(text = str("{0:.2f}").format(MFC_N2.voltage*config['MFC']['gradient'][0] + config['MFC']['x-axis'][0])+ " ml/min") 
+    value_MFC[1].configure(text = str("{0:.2f}").format(MFC_CO2.voltage*config['MFC']['gradient'][1] + config['MFC']['x-axis'][1])+ " ml/min") 
+    value_MFC[2].configure(text = str("{0:.2f}").format(MFC_CH4.voltage*config['MFC']['gradient'][2] + config['MFC']['x-axis'][2])+ " ml/min") 
     
     
     window.after(500, tk_loop)
@@ -25,17 +26,18 @@ def tk_loop():
 def getdata():
 
     if set_MFC[0].get() !='':
-        MFC_N2.set(int(set_MFC[0].get()))
+        MFC_N2.set(int(1000*(float(set_MFC[0].get())- config['MFC']['x-axis'][0])/ config['MFC']['gradient'][0]))
     if set_MFC[1].get() !='':
-        MFC_CO2.set(int(set_MFC[1].get()))
+        MFC_CO2.set(int(1000*(float(set_MFC[1].get())- config['MFC']['x-axis'][1])/ config['MFC']['gradient'][1]))
     if set_MFC[2].get() !='':
-        MFC_CH4.set(int(set_MFC[2].get()))
-    
- 
+        MFC_CH4.set(int(1000*(float(set_MFC[2].get())- config['MFC']['x-axis'][2])/ config['MFC']['gradient'][2]))
+   
+def getfile():
+    filename = askopenfilename()
 
 #----------- Json Setup ----------
-#with open('SetUp1.json', 'r') as config_file:
-   # config = json.load(config_file)
+with open('config.json', 'r') as config_file:
+  config = json.load(config_file)
     
      
  
@@ -65,12 +67,15 @@ window.geometry("350x300")
 lf_MFC = ctk.CTkFrame(window, border_color='#F2F2F2', border_width=0, height=scrH, width=scrW)
 name_Frame = ctk.CTkLabel(lf_MFC, font = ('Arial',16), text='MFC Steuerung')
 name_Frame.grid(column=0, columnspan = 2, row=0, ipadx=5, ipady=5)
-lf_MFC.place(x= 30,y= 50)
+lf_MFC.place(x= 30,y= 80)
 
 #------ Buttons ---------
 set_Value = ctk.CTkButton(window,text = 'Set Values', command = getdata, fg_color = 'brown')
 set_Value.place(x=30, y=10)
-MFC_List = ["N2",  "CO2",  "CH4"]
+get_filename = ctk.CTkButton(window,text = 'Config File', command = getfile, fg_color = 'brown')
+get_filename.place(x=30, y=40)
+
+MFC_List = config['MFC']['name']
 name_MFC={}; set_MFC={}; unit_MFC={}; value_MFC={}
 for i in range(0,3):
     name_MFC[i]= ctk.CTkLabel(lf_MFC, font = ('Arial',16), text=MFC_List[i])
